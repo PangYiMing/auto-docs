@@ -5,11 +5,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Date: 2022-10-10 15:53:37
  * @LastEditors: pym
  * @Description: TODO xxx
- * @LastEditTime: 2022-10-10 16:18:49
+ * @LastEditTime: 2022-10-10 17:43:49
  */
 function default_1(docs) {
     let str = '';
     docs.forEach(doc => {
+        if (!doc) {
+            return;
+        }
         if (doc.type === 'function') {
             str = transformFunc(str, doc);
         }
@@ -23,9 +26,11 @@ function default_1(docs) {
             }
             str += '> new ' + doc.name + '(';
             if (doc.params) {
-                str += doc.params.map(param => {
+                str += doc.params
+                    .map(param => {
                     return param.name + ': ' + param.type;
-                }).join(', ');
+                })
+                    .join(', ');
             }
             str += ')\n';
             str += '#### Properties:\n';
@@ -58,25 +63,36 @@ function stringRepeate(params, len) {
     return str;
 }
 function transformFunc(str, doc, titileDeep = 2) {
+    var _a, _b;
     str += stringRepeate('#', titileDeep) + ' ' + doc.name + '\n';
-    str += doc.doc.description + '\n';
-    if (doc.doc.tags) {
+    str += (((_a = doc.doc) === null || _a === void 0 ? void 0 : _a.description) || '') + '\n';
+    if ((_b = doc.doc) === null || _b === void 0 ? void 0 : _b.tags) {
         doc.doc.tags.forEach(tag => {
-            str += (tag.name || tag.title) + ': ' + tag.description.replace(':', '') + '\n';
+            str +=
+                (tag.name || tag.title) +
+                    ': ' +
+                    tag.description.replace(':', '') +
+                    '\n';
         });
     }
     str += '>' + doc.name + '(';
     if (doc.params) {
-        str += doc.params.map(param => {
+        str += doc.params
+            .map(param => {
             return param.name + ': ' + param.type;
-        }).join(', ');
+        })
+            .join(', ');
     }
     str += ')' + ':' + doc.return + '\n';
-    str += stringRepeate('#', (titileDeep + 1) < 4 ? 4 : (titileDeep + 1)) + ' Parameters:\n';
+    str +=
+        stringRepeate('#', titileDeep + 1 < 4 ? 4 : titileDeep + 1) +
+            ' Parameters:\n';
     if (doc.params && doc.params.length) {
-        str += doc.params.map(param => {
+        str += doc.params
+            .map(param => {
             return '- ' + param.name + '(' + param.type + ')';
-        }).join('\n');
+        })
+            .join('\n');
     }
     else {
         str += 'null\n';

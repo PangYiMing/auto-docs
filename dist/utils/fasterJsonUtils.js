@@ -1,14 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStrArrFromArrByKey = exports.getArrFromArrByKey = exports.getArrayFromArrByKeyValue = exports.getItemFromArrByKeyValue = void 0;
-/*
- * @Author: your name
- * @Date: 2022-01-02 21:54:22
- * @LastEditTime: 2022-01-02 21:54:23
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \dirTree\src\utils\fasterJsonUtils.ts
- */
 /**
  * 跟数组中item的key和value拿到对应的item
  * @param array 源数据数组

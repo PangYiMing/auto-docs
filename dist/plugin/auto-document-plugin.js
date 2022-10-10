@@ -66,8 +66,13 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
         },
         visitor: {
             FunctionDeclaration(path, state) {
-                const docs = state.file.get('docs');
-                docs.push({
+                let comment = (path.node.leadingComments &&
+                    parseComment(path.node.leadingComments.at(-1).value)) ||
+                    (path.parent &&
+                        path.parent.type === 'ExportDefaultDeclaration' &&
+                        path.parent.leadingComments &&
+                        parseComment(path.parent.leadingComments.at(-1).value));
+                const doc = {
                     type: 'function',
                     name: path.get('id').toString(),
                     params: path.get('params').map(paramPath => {
@@ -77,13 +82,15 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                         };
                     }),
                     return: resolveType(path.get('returnType').getTypeAnnotation()) || 'void',
-                    doc: path.node.leadingComments &&
-                        parseComment(path.node.leadingComments.at(-1).value),
-                });
-                state.file.set('docs', docs);
+                    doc: comment,
+                };
+                if (doc.doc) {
+                    const docs = state.file.get('docs');
+                    docs.push(doc);
+                    state.file.set('docs', docs);
+                }
             },
             ClassDeclaration(path, state) {
-                const docs = state.file.get('docs');
                 const classInfo = {
                     type: 'class',
                     name: path.get('id').toString(),
@@ -117,16 +124,18 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                                     return {
                                         name: paramPath.toString(),
                                         type: resolveType(paramPath.getTypeAnnotation()),
-                                        doc: parseComment(path.node.leadingComments.at(-1)
-                                            .value),
+                                        doc: path.node.leadingComments &&
+                                            parseComment(path.node.leadingComments.at(-1)
+                                                .value),
                                     };
                                 }),
                             };
                         }
                         else {
-                            classInfo.methodsInfo.push({
+                            const methodDoc = {
                                 name: path.get('key').toString(),
-                                doc: parseComment(path.node.leadingComments.at(-1).value),
+                                doc: path.node.leadingComments &&
+                                    parseComment(path.node.leadingComments.at(-1).value),
                                 params: path.get('params').map(paramPath => {
                                     return {
                                         name: paramPath.toString(),
@@ -136,19 +145,27 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                                 return: resolveType(path
                                     .get('returnType')
                                     .getTypeAnnotation()) || 'void',
-                            });
+                            };
+                            if (methodDoc.doc) {
+                                classInfo.methodsInfo.push(methodDoc);
+                            }
                         }
                     },
                 });
-                docs.push(classInfo);
-                state.file.set('docs', docs);
+                if (classInfo.doc || classInfo.methodsInfo.length) {
+                    const docs = state.file.get('docs');
+                    docs.push(classInfo);
+                    state.file.set('docs', docs);
+                }
             },
         },
         post(file) {
             const docs = file.get('docs');
             const res = generate(docs, options.format);
             fs_extra_1.default.ensureDirSync(options.outputDir);
-            fs_extra_1.default.writeFileSync(path_1.default.join(options.outputDir, options.fileName + res.ext), res.content);
+            if (res.content) {
+                fs_extra_1.default.writeFileSync(path_1.default.join(options.outputDir, options.fileName + res.ext), res.content);
+            }
         },
     };
 });

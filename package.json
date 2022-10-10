@@ -1,8 +1,8 @@
 {
-  "name": "sys-tree",
-  "version": "1.0.6",
-  "description": "\"# dir tree cli\"",
-  "main": "file.js",
+  "name": "auto-docs",
+  "version": "1.0.0",
+  "description": "\"# auto generator docs cli\"",
+  "main": "src/fileDirTree/index.ts",
   "directories": {
     "test": "test"
   },
@@ -14,18 +14,18 @@
     "prepare": "husky install"
   },
   "bin": {
-    "stree": "./dist/fileDirTree/index.js"
+    "autoDocs": "./dist/fileDirTree/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PangYiMing/dirTree.git"
+    "url": "git+https://github.com/PangYiMing/auto-docs.git"
   },
   "author": "pangyiming",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PangYiMing/dirTree/issues"
+    "url": "https://github.com/PangYiMing/auto-docs/issues"
   },
-  "homepage": "https://github.com/PangYiMing/dirTree#readme",
+  "homepage": "https://github.com/PangYiMing/auto-docs#readme",
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/generator": "^7.13.9",
