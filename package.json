@@ -1,5 +1,5 @@
 {
-  "name": "auto-docs",
+  "name": "auto-generator-docs",
   "version": "1.0.0",
   "description": "\"# auto generator docs cli\"",
   "main": "src/fileDirTree/index.ts",
