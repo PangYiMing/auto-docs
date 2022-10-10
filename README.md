@@ -40,5 +40,9 @@ autoDocs -t /Users/xxx/workspace  -d 2 -i .git,node_modules
 ## 安装
 
 ```
-npm install -g auto-docs
+npm install -g auto-generator-docs
 ```
+
+### 效果图：
+
+![效果展示](./showMd.png)
