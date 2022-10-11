@@ -1,10 +1,3 @@
-/*
- * @Author: pym
- * @Date: 2022-01-10 09:48:34
- * @LastEditors: pym
- * @Description:
- * @LastEditTime: 2022-10-10 21:08:06
- */
 import path from 'path';
 import { walkSync } from '../utils/readDirPaths';
 import transformDocs from '../plugin/index';

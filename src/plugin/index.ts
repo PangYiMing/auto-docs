@@ -1,11 +1,3 @@
-/*
- * @Author: pym
- * @Date: 2022-10-10 14:59:42
- * @LastEditors: pym
- * @Description: TODO xxx
- * @LastEditTime: 2022-10-10 17:49:30
- */
-
 import { transformFromAstSync } from '@babel/core';
 import { parse } from '@babel/parser';
 import autoDocumentPlugin from './auto-document-plugin';

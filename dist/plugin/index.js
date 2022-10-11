@@ -1,11 +1,4 @@
 "use strict";
-/*
- * @Author: pym
- * @Date: 2022-10-10 14:59:42
- * @LastEditors: pym
- * @Description: TODO xxx
- * @LastEditTime: 2022-10-10 17:49:30
- */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

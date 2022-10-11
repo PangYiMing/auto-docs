@@ -1,12 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @Author: pym
- * @Date: 2022-10-10 15:53:37
- * @LastEditors: pym
- * @Description: TODO xxx
- * @LastEditTime: 2022-10-10 17:43:49
- */
 function default_1(docs) {
     let str = '';
     docs.forEach(doc => {
