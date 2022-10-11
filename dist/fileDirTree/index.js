@@ -40,6 +40,7 @@ if (!options.deep) {
 if (!options.ignore) {
     options.ignore = '.git,node_modules';
 }
+options.fileName = 'docs';
 if (options.single !== true) {
     if (typeof options.single === 'string') {
         options.fileName = options.single || 'docs';
@@ -49,6 +50,13 @@ if (options.single !== true) {
         options.single = false;
     }
 }
+// const options = {
+//     target: 'D:\\work\\tripdocs-js-sdk',
+//     deep: '-1',
+//     ignore: '.git,node_modules',
+//     single: false,
+//     fileName : 'docs'
+// };
 console.log(options);
 // TODO 如果指定层级在当前行无下一个子元素应该为空格缩进，如果当前行是最后一个子元素应该是回车符号+空格缩进，如果其他，应该是竖线+空格缩进
 // const dirPath = path.resolve(__dirname, '../../');

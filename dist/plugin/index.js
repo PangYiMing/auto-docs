@@ -27,7 +27,7 @@ function transformDocs(tPath, outputDir, options) {
     });
     const ast = (0, parser_1.parse)(sourceCode, {
         sourceType: 'unambiguous',
-        plugins: ['typescript'],
+        plugins: ['typescript', 'jsx'],
     });
     const { code } = (0, core_1.transformFromAstSync)(ast, sourceCode, {
         plugins: [

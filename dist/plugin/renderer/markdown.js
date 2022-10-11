@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function default_1(docs) {
     let str = '';
     docs.forEach(doc => {
+        var _a, _b;
         if (!doc) {
             return;
         }
@@ -18,10 +19,16 @@ function default_1(docs) {
         }
         else if (doc.type === 'class') {
             str += '##' + doc.name + '\n';
-            str += doc.doc.description + '\n';
-            if (doc.doc.tags) {
+            str += ((_a = doc.doc) === null || _a === void 0 ? void 0 : _a.description) + '\n';
+            if (Array.isArray((_b = doc.doc) === null || _b === void 0 ? void 0 : _b.tags)) {
                 doc.doc.tags.forEach(tag => {
-                    str += tag.name + ': ' + tag.description + '\n';
+                    str +=
+                        tag.name +
+                            ': ' +
+                            (tag.description
+                                ? tag.description.replace(':', '')
+                                : '') +
+                            '\n';
                 });
             }
             str += '> new ' + doc.name + '(';
@@ -66,12 +73,12 @@ function transformFunc(str, doc, titileDeep = 2) {
     var _a, _b;
     str += stringRepeate('#', titileDeep) + ' ' + doc.name + '\n';
     str += (((_a = doc.doc) === null || _a === void 0 ? void 0 : _a.description) || '') + '\n';
-    if ((_b = doc.doc) === null || _b === void 0 ? void 0 : _b.tags) {
+    if (Array.isArray((_b = doc.doc) === null || _b === void 0 ? void 0 : _b.tags)) {
         doc.doc.tags.forEach(tag => {
             str +=
                 (tag.name || tag.title) +
                     ': ' +
-                    tag.description.replace(':', '') +
+                    (tag.description ? tag.description.replace(':', '') : '') +
                     '\n';
         });
     }
