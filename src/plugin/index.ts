@@ -22,7 +22,7 @@ export default function transformDocs(
     outputDir: string,
     options: any
 ) {
-    const { singleFile } = options;
+    const { singleFile, singleFileName } = options;
     const sourceCode = fs.readFileSync(tPath, {
         encoding: 'utf-8',
     });
@@ -41,6 +41,7 @@ export default function transformDocs(
                     fileName: tPath.split(path.sep).at(-1).split('.')[0],
                     format: 'markdown', // html / json
                     singleFile: singleFile,
+                    singleFileName,
                 },
             ],
         ],

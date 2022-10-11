@@ -15,12 +15,15 @@ import fs from 'fs';
 
 // TODO 支持合并成一个文件
 // TODO 支持本地文件路径在md里展示
-// 支持单文件
+// 支持单文件,单文件可以指定文件名字
 // TODO 支持子参数，单层的
 const program = new Command();
 program
     .option('-t, --target <type>', 'Specify target path')
-    .option('-s, --single true', 'Whether to use single file mode')
+    .option(
+        '-s, --single <fileName>',
+        'Whether to use single file mode,can specify fileName'
+    )
     .option('-d, --deep <type>', 'option:specify max deep, etc.: 2 ')
     .option(
         '-i, --ignore <type>',
@@ -43,7 +46,12 @@ if (!options.ignore) {
 }
 
 if (options.single !== true) {
-    options.single = false;
+    if (typeof options.single === 'string') {
+        options.fileName = options.single || 'docs';
+        options.single = true;
+    } else {
+        options.single = false;
+    }
 }
 console.log(options);
 
@@ -63,11 +71,9 @@ const outFilePath = path.resolve(target, 'docs');
 // 清空文件夹
 walkSync({
     dirPath: outFilePath,
-    callback: (filePath, stat, treeOpt: { deep; isEnd; parent }) => {
+    callback: filePath => {
         fs.unlinkSync(filePath);
     },
-    singleFile: options.single,
-    maxDeep: options.deep ? parseInt(options.deep, 10) : -1,
 });
 
 function callback(
@@ -96,7 +102,10 @@ function callback(
             stat.isFile() &&
             ['js', 'ts', 'jsx', 'tsx'].includes(getEndWith(filePath))
         ) {
-            transformDocs(filePath, outFilePath, { singleFile });
+            transformDocs(filePath, outFilePath, {
+                singleFile,
+                singleFileName: options.fileName,
+            });
         }
     }
     isFirst = false;

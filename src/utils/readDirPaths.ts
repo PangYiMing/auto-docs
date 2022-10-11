@@ -3,13 +3,13 @@ import path from 'path';
 
 interface walkSyncProps {
     dirPath: string;
-    singleFile: boolean;
+    singleFile?: boolean;
     callback: Function;
     maxDeep?: number;
 }
 interface readFileSystemProps {
     dirPath: string;
-    singleFile: boolean;
+    singleFile?: boolean;
     callback: Function;
     maxDeep?: number;
     deep: number;
