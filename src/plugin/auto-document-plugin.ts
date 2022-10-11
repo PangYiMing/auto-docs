@@ -67,11 +67,15 @@ const autoDocumentPlugin = declare((api, options, dirname) => {
             FunctionDeclaration(path, state) {
                 let comment =
                     (path.node.leadingComments &&
-                        parseComment(path.node.leadingComments.at(-1).value)) ||
+                        parseComment(
+                            path.node.leadingComments.at(-1)?.value
+                        )) ||
                     (path.parent &&
                         path.parent.type === 'ExportDefaultDeclaration' &&
                         path.parent.leadingComments &&
-                        parseComment(path.parent.leadingComments.at(-1).value));
+                        parseComment(
+                            path.parent.leadingComments.at(-1)?.value
+                        ));
 
                 const doc = {
                     type: 'function',
@@ -104,7 +108,7 @@ const autoDocumentPlugin = declare((api, options, dirname) => {
                 };
                 if (path.node.leadingComments) {
                     classInfo.doc = parseComment(
-                        path.node.leadingComments.at(-1).value
+                        path.node.leadingComments.at(-1)?.value
                     );
                 }
                 path.traverse({
@@ -147,7 +151,7 @@ const autoDocumentPlugin = declare((api, options, dirname) => {
                                 doc:
                                     path.node.leadingComments &&
                                     parseComment(
-                                        path.node.leadingComments.at(-1).value
+                                        path.node.leadingComments.at(-1)?.value
                                     ),
                                 params: path.get('params').map(paramPath => {
                                     return {

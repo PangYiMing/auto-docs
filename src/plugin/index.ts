@@ -25,6 +25,7 @@ export default function transformDocs(
     });
 
     const { code } = transformFromAstSync(ast, sourceCode, {
+        filename: tPath.split(path.sep).at(-1),
         plugins: [
             [
                 autoDocumentPlugin,

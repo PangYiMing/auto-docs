@@ -66,12 +66,13 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
         },
         visitor: {
             FunctionDeclaration(path, state) {
+                var _a, _b;
                 let comment = (path.node.leadingComments &&
-                    parseComment(path.node.leadingComments.at(-1).value)) ||
+                    parseComment((_a = path.node.leadingComments.at(-1)) === null || _a === void 0 ? void 0 : _a.value)) ||
                     (path.parent &&
                         path.parent.type === 'ExportDefaultDeclaration' &&
                         path.parent.leadingComments &&
-                        parseComment(path.parent.leadingComments.at(-1).value));
+                        parseComment((_b = path.parent.leadingComments.at(-1)) === null || _b === void 0 ? void 0 : _b.value));
                 const doc = {
                     type: 'function',
                     name: path.get('id').toString(),
@@ -91,6 +92,7 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                 }
             },
             ClassDeclaration(path, state) {
+                var _a;
                 const classInfo = {
                     type: 'class',
                     name: path.get('id').toString(),
@@ -99,7 +101,7 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                     propertiesInfo: [],
                 };
                 if (path.node.leadingComments) {
-                    classInfo.doc = parseComment(path.node.leadingComments.at(-1).value);
+                    classInfo.doc = parseComment((_a = path.node.leadingComments.at(-1)) === null || _a === void 0 ? void 0 : _a.value);
                 }
                 path.traverse({
                     ClassProperty(path) {
@@ -118,6 +120,7 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                         });
                     },
                     ClassMethod(path) {
+                        var _a;
                         if (path.node.kind === 'constructor') {
                             classInfo.constructorInfo = {
                                 params: path.get('params').map(paramPath => {
@@ -135,7 +138,7 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
                             const methodDoc = {
                                 name: path.get('key').toString(),
                                 doc: path.node.leadingComments &&
-                                    parseComment(path.node.leadingComments.at(-1).value),
+                                    parseComment((_a = path.node.leadingComments.at(-1)) === null || _a === void 0 ? void 0 : _a.value),
                                 params: path.get('params').map(paramPath => {
                                     return {
                                         name: paramPath.toString(),

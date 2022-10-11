@@ -23,6 +23,7 @@ function transformDocs(tPath, outputDir, options) {
         plugins: ['typescript', 'jsx'],
     });
     const { code } = (0, core_1.transformFromAstSync)(ast, sourceCode, {
+        filename: tPath.split(path_1.default.sep).at(-1),
         plugins: [
             [
                 auto_document_plugin_1.default,
