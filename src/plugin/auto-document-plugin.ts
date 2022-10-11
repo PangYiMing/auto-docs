@@ -181,6 +181,14 @@ const autoDocumentPlugin = declare((api, options, dirname) => {
             const docs = file.get('docs');
             const res = generate(docs, options.format);
             fse.ensureDirSync(options.outputDir);
+            if (options.singleFile) {
+                fse.appendFileSync(
+                    path.join(options.outputDir, 'docs' + res.ext),
+                    res.content
+                );
+                return;
+            }
+
             if (res.content) {
                 fse.writeFileSync(
                     path.join(options.outputDir, options.fileName + res.ext),

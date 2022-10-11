@@ -15,15 +15,16 @@ import fs from 'fs';
 
 // TODO 支持合并成一个文件
 // TODO 支持本地文件路径在md里展示
-// TODO 支持单文件
+// 支持单文件
 // TODO 支持子参数，单层的
 const program = new Command();
 program
-    .option('-t, --target <type>', 'specify target path')
+    .option('-t, --target <type>', 'Specify target path')
+    .option('-s, --single true', 'Whether to use single file mode')
     .option('-d, --deep <type>', 'option:specify max deep, etc.: 2 ')
     .option(
         '-i, --ignore <type>',
-        'option:specify ignore dirs, etc.: .git,node_modules. default .git,node_modules'
+        'Option: specify ignore dirs, etc.: .git,node_modules. default .git,node_modules'
     );
 
 program.parse();
@@ -39,6 +40,10 @@ if (!options.deep) {
 // TODO 支持空字符串
 if (!options.ignore) {
     options.ignore = '.git,node_modules';
+}
+
+if (options.single !== true) {
+    options.single = false;
 }
 console.log(options);
 
@@ -61,15 +66,16 @@ walkSync({
     callback: (filePath, stat, treeOpt: { deep; isEnd; parent }) => {
         fs.unlinkSync(filePath);
     },
+    singleFile: options.single,
     maxDeep: options.deep ? parseInt(options.deep, 10) : -1,
 });
 
 function callback(
     filePath: string,
     stat: any,
-    treeOpt: { deep: number; isEnd: boolean; parent: any }
+    treeOpt: { deep: number; isEnd: boolean; parent: any; singleFile: boolean }
 ) {
-    const { deep, isEnd, parent } = treeOpt;
+    const { deep, isEnd, parent, singleFile } = treeOpt;
     if (isFirst) {
         console.log(options.target.split(path.sep).pop());
     }
@@ -90,7 +96,7 @@ function callback(
             stat.isFile() &&
             ['js', 'ts', 'jsx', 'tsx'].includes(getEndWith(filePath))
         ) {
-            transformDocs(filePath, outFilePath);
+            transformDocs(filePath, outFilePath, { singleFile });
         }
     }
     isFirst = false;
@@ -104,4 +110,5 @@ walkSync({
     dirPath: target,
     callback,
     maxDeep: options.deep ? parseInt(options.deep, 10) : -1,
+    singleFile: options.single,
 });

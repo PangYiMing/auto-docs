@@ -3,11 +3,13 @@ import path from 'path';
 
 interface walkSyncProps {
     dirPath: string;
+    singleFile: boolean;
     callback: Function;
     maxDeep?: number;
 }
 interface readFileSystemProps {
     dirPath: string;
+    singleFile: boolean;
     callback: Function;
     maxDeep?: number;
     deep: number;
@@ -22,12 +24,18 @@ interface readFileSystemProps {
  *  maxDeep 最大回调次数，默认-1（无限层级请设为-1）  ——可选
  * @returns
  */
-export function walkSync({ dirPath, callback, maxDeep }: walkSyncProps) {
+export function walkSync({
+    dirPath,
+    callback,
+    maxDeep,
+    singleFile,
+}: walkSyncProps) {
     readFileSystem({
         dirPath,
         callback,
         maxDeep,
         deep: 1,
+        singleFile,
     });
 }
 /**
@@ -45,6 +53,7 @@ function readFileSystem({
     maxDeep,
     deep = 1,
     parent = {},
+    singleFile,
 }: readFileSystemProps) {
     if (typeof dirPath !== 'string') {
         return;
@@ -54,6 +63,7 @@ function readFileSystem({
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -65,6 +75,7 @@ function readFileSystem({
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -77,6 +88,7 @@ function readFileSystem({
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -96,12 +108,14 @@ function readFileSystem({
                 deep,
                 isEnd,
                 parent,
+                singleFile,
             });
         } else if (stat.isDirectory()) {
             callback(filePath, stat, {
                 deep,
                 isEnd,
                 parent,
+                singleFile,
             });
             if (maxDeep < 0 || maxDeep > deep) {
                 if (!parent.isEndArr) {
@@ -109,6 +123,7 @@ function readFileSystem({
                 }
                 readFileSystem({
                     dirPath: filePath,
+                    singleFile,
                     callback,
                     maxDeep,
                     deep: deep + 1,
