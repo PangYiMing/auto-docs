@@ -20,7 +20,8 @@ const path_1 = __importDefault(require("path"));
  * @param tPath 需要处理的文件
  * @param outputDir 输出文件的目录
  */
-function transformDocs(tPath, outputDir) {
+function transformDocs(tPath, outputDir, options) {
+    const { singleFile, singleFileName } = options;
     const sourceCode = fs_1.default.readFileSync(tPath, {
         encoding: 'utf-8',
     });
@@ -35,7 +36,9 @@ function transformDocs(tPath, outputDir) {
                 {
                     outputDir,
                     fileName: tPath.split(path_1.default.sep).at(-1).split('.')[0],
-                    format: 'markdown', // html / json
+                    format: 'markdown',
+                    singleFile: singleFile,
+                    singleFileName,
                 },
             ],
         ],

@@ -14,12 +14,13 @@ const path_1 = __importDefault(require("path"));
  *  maxDeep 最大回调次数，默认-1（无限层级请设为-1）  ——可选
  * @returns
  */
-function walkSync({ dirPath, callback, maxDeep }) {
+function walkSync({ dirPath, callback, maxDeep, singleFile, }) {
     readFileSystem({
         dirPath,
         callback,
         maxDeep,
         deep: 1,
+        singleFile,
     });
 }
 exports.walkSync = walkSync;
@@ -32,7 +33,7 @@ exports.walkSync = walkSync;
  *  deep 当前深度  ——可选
  * @returns
  */
-function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) {
+function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, singleFile, }) {
     if (typeof dirPath !== 'string') {
         return;
     }
@@ -42,6 +43,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -54,6 +56,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -66,6 +69,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
             callback,
             maxDeep,
             deep,
+            singleFile,
         });
         return;
     }
@@ -82,6 +86,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
                 deep,
                 isEnd,
                 parent,
+                singleFile,
             });
         }
         else if (stat.isDirectory()) {
@@ -89,6 +94,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
                 deep,
                 isEnd,
                 parent,
+                singleFile,
             });
             if (maxDeep < 0 || maxDeep > deep) {
                 if (!parent.isEndArr) {
@@ -96,6 +102,7 @@ function readFileSystem({ dirPath, callback, maxDeep, deep = 1, parent = {}, }) 
                 }
                 readFileSystem({
                     dirPath: filePath,
+                    singleFile,
                     callback,
                     maxDeep,
                     deep: deep + 1,

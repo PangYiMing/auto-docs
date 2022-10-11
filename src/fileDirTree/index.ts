@@ -16,6 +16,7 @@ import fs from 'fs';
 // TODO 支持合并成一个文件
 // TODO 支持本地文件路径在md里展示
 // 支持单文件,单文件可以指定文件名字
+
 // TODO 支持子参数，单层的
 const program = new Command();
 program
@@ -102,10 +103,17 @@ function callback(
             stat.isFile() &&
             ['js', 'ts', 'jsx', 'tsx'].includes(getEndWith(filePath))
         ) {
-            transformDocs(filePath, outFilePath, {
-                singleFile,
-                singleFileName: options.fileName,
-            });
+            // 避免处理名字中有两个点的文件
+            // 避免处理名字中点在最前面的文件
+            const fName = filePath.split(path.sep).pop();
+            const index = fName.indexOf('.');
+            const condition = index > 0 && fName.indexOf('.', index + 1) === -1;
+            if (condition) {
+                transformDocs(filePath, outFilePath, {
+                    singleFile,
+                    singleFileName: options.fileName,
+                });
+            }
         }
     }
     isFirst = false;

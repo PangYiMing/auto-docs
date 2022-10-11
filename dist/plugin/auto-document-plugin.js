@@ -163,6 +163,10 @@ const autoDocumentPlugin = (0, helper_plugin_utils_1.declare)((api, options, dir
             const docs = file.get('docs');
             const res = generate(docs, options.format);
             fs_extra_1.default.ensureDirSync(options.outputDir);
+            if (options.singleFile) {
+                fs_extra_1.default.appendFileSync(path_1.default.join(options.outputDir, options.singleFileName + res.ext), res.content);
+                return;
+            }
             if (res.content) {
                 fs_extra_1.default.writeFileSync(path_1.default.join(options.outputDir, options.fileName + res.ext), res.content);
             }
