@@ -29,7 +29,7 @@ export default function transformDocs(
 
     const ast = parse(sourceCode, {
         sourceType: 'unambiguous',
-        plugins: ['typescript'],
+        plugins: ['typescript', 'jsx'],
     });
 
     const { code } = transformFromAstSync(ast, sourceCode, {

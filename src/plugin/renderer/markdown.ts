@@ -16,10 +16,16 @@ export default function (docs) {
             str = transformFunc(str, doc);
         } else if (doc.type === 'class') {
             str += '##' + doc.name + '\n';
-            str += doc.doc.description + '\n';
-            if (doc.doc.tags) {
+            str += doc.doc?.description + '\n';
+            if (Array.isArray(doc.doc?.tags)) {
                 doc.doc.tags.forEach(tag => {
-                    str += tag.name + ': ' + tag.description + '\n';
+                    str +=
+                        tag.name +
+                        ': ' +
+                        (tag.description
+                            ? tag.description.replace(':', '')
+                            : '') +
+                        '\n';
                 });
             }
             str += '> new ' + doc.name + '(';
@@ -62,12 +68,12 @@ function stringRepeate(params, len) {
 function transformFunc(str, doc, titileDeep = 2) {
     str += stringRepeate('#', titileDeep) + ' ' + doc.name + '\n';
     str += (doc.doc?.description || '') + '\n';
-    if (doc.doc?.tags) {
+    if (Array.isArray(doc.doc?.tags)) {
         doc.doc.tags.forEach(tag => {
             str +=
                 (tag.name || tag.title) +
                 ': ' +
-                tag.description.replace(':', '') +
+                (tag.description ? tag.description.replace(':', '') : '') +
                 '\n';
         });
     }
